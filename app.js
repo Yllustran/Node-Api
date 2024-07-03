@@ -21,8 +21,8 @@ app.get('/api/pokemons/:id', (req, res) => {
     if (id > 151) {
         res.send('Navré, le pokedex ne contient que 151 pokémons...');
     } else {
-        // Si le pokémon est trouvé, envoi d'une réponse avec le nom du pokémon
-        res.send(`Vous avez demandé le pokémon ${pokemon.name}`);
+        // Si le pokémon est trouvé, envoi d'une réponse avec au format json
+        res.json(pokemon);
     }
 });
 
