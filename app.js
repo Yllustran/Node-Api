@@ -1,5 +1,6 @@
 // Importation du module express pour créer une application web
 const express = require('express');
+const { success } = require('./helper.js');
 // Importation des données des pokémons à partir du fichier 'card-pokemons.js'
 let pokemons = require('./card-pokemons.js');
 const app = express();
@@ -22,7 +23,9 @@ app.get('/api/pokemons/:id', (req, res) => {
         res.send('Navré, le pokedex ne contient que 151 pokémons...');
     } else {
         // Si le pokémon est trouvé, envoi d'une réponse avec au format json
-        res.json(pokemon);
+        const message = 'Un pokémon a bien été trouvé.';
+        // on utiise la methode sucess du module helper avec deux paramètres (message, data)
+        res.json(success(message, pokemon));
     }
 });
 
