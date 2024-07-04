@@ -2,7 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const favicon = require('serve-favicon')
-const { success } = require('./helper.js');
+const { success, getUniqueId } = require('./helper.js');
 // Importation des données des pokémons à partir du fichier 'card-pokemons.js'
 let pokemons = require('./card-pokemons.js');
 const app = express();
@@ -10,8 +10,8 @@ const app = express();
 const port = 3000;
 
 app
-    .use(favicon(__dirname + '/favicon.ico'))
-    .use(morgan('dev'))
+    .use(favicon(__dirname + '/favicon.ico')) // Utilise le middleware 'serve-favicon' pour afficher le fichier favicon.ico 
+    .use(morgan('dev')); // Utilise le middleware 'morgan' pour logger les requêtes HTTP
 
 // Définition d'une route pour la méthode GET sur le chemin '/' 
 // Cette route envoie une réponse avec le message 'hello world !'
@@ -34,6 +34,22 @@ app.get('/api/pokemons/:id', (req, res) => {
         res.json(success(message, pokemon));
     }
 });
+
+
+// Route POST à l'URL /api/pokemons
+app.post('/api/pokemons', (req, res) => {
+    // Génère un nouvel ID unique pour le pokemon avec la méthode getUniqueId contenu dans helper.js
+    const id = getUniqueId(pokemons);
+    // Crée un nouvel objet pokemon avec les données de la requête, en ajoutant l'ID unique et la date de création
+    const pokemonCreated = { ...req.body, ...{ id: id, created: new Date() }};
+    // Ajoute le nouveau pokemon à la liste des pokemons
+    pokemons.push(pokemonCreated);
+    // Crée un message de succès avec le nom du pokemon créé
+    const message = `Le pokemon ${pokemonCreated.name} a bien été créé`;
+    // Renvoie une réponse JSON avec un message de succès et le pokemon créé
+    res.json(success(message, pokemonCreated));
+});
+
 
 // Définition d'une route pour la méthode GET sur le chemin '/api/pokemons'
 // Cette route envoie une réponse avec le nombre total de pokémons dans le pokédex
