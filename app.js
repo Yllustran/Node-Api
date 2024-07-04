@@ -70,6 +70,15 @@ app.put('/api/pokemons/:id', (req, res) => {
     res.json(success(message, pokemonUpdated));
 });
 
+// CRUD -> Delete : Pour la suppression de pokemons sous insomnia
+app.delete('/api/pokemons/:id', (req, res) => {
+    const id = parseInt(req.params.id)
+    const pokemonDeleted = pokemons.find(pokemon => pokemon.id === id)
+    pokemons = pokemons.filter(pokemon => pokemon.id !== id)
+    const message = `Le pokémon ${pokemonDeleted.name} a bien été supprimé.`
+    res.json(success(message, pokemonDeleted))
+  });
+  
 // Définition d'une route pour la méthode GET sur le chemin '/api/pokemons'
 // Cette route envoie une réponse avec le nombre total de pokémons dans le pokédex
 app.get('/api/pokemons', (req, res) => {
