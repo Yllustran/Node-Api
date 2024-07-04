@@ -27,20 +27,29 @@ const sequelize = new Sequelize(
     }
 );
 
-// Synchronise la base de données, en supprimant et recréant les tables si nécessaire
+// Test de la connexion à la base de données
+sequelize.authenticate()
+    .then(_ => console.log('La connexion à la base de données a bien été établie.')) // Message de succès si la connexion est établie
+    .catch(error => console.error(`Impossible de se connecter à la base de données: ${error}`)); // Message d'erreur en cas d'échec de la connexion
+const Pokemon = PokemonModel(sequelize, DataTypes);
+
 sequelize.sync({force: true})
     .then(_ => {
         // Affiche un message dans la console indiquant que la base de données a été synchronisée
         console.log('La base de donnée "Pokedex" a bien été synchronisée')
 
         // Crée un nouveau Pokémon avec les informations fournies
-        Pokemon.create({
-            name: "Bulbizarre", // Nom du Pokémon
-            hp: 25, // Points de vie du Pokémon
-            cp: 5, // Points de combat du Pokémon
-            picture: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png", // URL de l'image du Pokémon
-            types: ["Plante", "Poison"].join() // Types du Pokémon, joint en une seule chaîne
-        }).then(bulbizzare => console.log(bulbizzare.toJSON())) // Affiche les détails du Pokémon créé dans la console
+        pokemons.map(pokemon =>{
+             // Crée un enregistrement pour chaque Pokémon dans la base de données
+            Pokemon.create({
+                name: pokemon.name,       // Nom du Pokémon
+                hp: pokemon.hp,           // Points de vie du Pokémon
+                cp: pokemon.cp,           // Points de combat du Pokémon
+                picture: pokemon.picture, // Image du Pokémon
+                types: pokemon.types.join() // Types du Pokémon, joints en une seule chaîne de caractères
+            // Affiche le Pokémon créé dans la console au format JSON
+            }).then(bulbizzare => console.log(bulbizzare.toJSON()))
+        });
     });
 
 app
