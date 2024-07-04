@@ -2,13 +2,39 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const favicon = require('serve-favicon')
+const favicon = require('serve-favicon');
+const { Sequelize, DataTypes } = require('sequelize');
 const { success, getUniqueId } = require('./helper.js');
 // Importation des données des pokémons à partir du fichier 'card-pokemons.js'
 let pokemons = require('./card-pokemons.js');
+const PokemonModel = require('./pokemons'); 
 const app = express();
 // Définition du port sur lequel l'application va écouter
 const port = 3000;
+
+// Création d'une instance de Sequelize pour se connecter à la base de données
+const sequelize = new Sequelize(
+    'pokedex', // Nom de la base de données
+    'root', // Nom d'utilisateur pour la base de données
+    '', // Mot de passe pour la base de données
+    {
+        host: 'localhost', // Adresse du serveur de la base de données
+        dialect: 'mariadb', // Type de base de données utilisé 
+        dialectOptions: {
+            timezone: 'Etc/GMT-2', // Fuseau horaire à utiliser pour les timestamps
+        },
+        logging: false // Désactivation des logs SQL dans la console
+    }
+);
+
+// Test de la connexion à la base de données
+sequelize.authenticate()
+    .then(_ => console.log('La connexion à la base de données a bien été établie.')) // Message de succès si la connexion est établie
+    .catch(error => console.error(`Impossible de se connecter à la base de données: ${error}`)); // Message d'erreur en cas d'échec de la connexion
+const Pokemon = PokemonModel(sequelize, DataTypes);
+
+sequelize.sync({force: true})
+.then(_ => console.log('La base de donnée "Pokedex" a bien été synchronisée'));
 
 app
     .use(favicon(__dirname + '/favicon.ico')) // Utilise le middleware 'serve-favicon' pour afficher le fichier favicon.ico 
@@ -78,7 +104,7 @@ app.delete('/api/pokemons/:id', (req, res) => {
     const message = `Le pokémon ${pokemonDeleted.name} a bien été supprimé.`
     res.json(success(message, pokemonDeleted))
   });
-  
+
 // Définition d'une route pour la méthode GET sur le chemin '/api/pokemons'
 // Cette route envoie une réponse avec le nombre total de pokémons dans le pokédex
 app.get('/api/pokemons', (req, res) => {
