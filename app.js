@@ -17,5 +17,13 @@ sequelize.initDb()
 
 // Ici, je placerais les futurs points de terminaison
 
+// Importation et configuration de la route pour récupérer tous les pokémons
+require('./src/routes/findAllPokemons.js')(app);
+// Importation et configuration de la route pour récupérer un pokémon par son ID
+require('./src/routes/findPokemonByPk.js')(app);
+// Importation et configuration de la route pour créer un nouveau pokémon
+require('./src/routes/createPokemon.js')(app);
+
+
 // j'affiche un message dans la console pour indiquer que le serveur est en cours d'exécution
 app.listen(port, () => console.log(`Application Node est démarré sur : http://localhost:${port}`));
