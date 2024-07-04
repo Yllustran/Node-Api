@@ -1,11 +1,17 @@
 // Importation du module express pour créer une application web
 const express = require('express');
+const morgan = require('morgan');
+const favicon = require('serve-favicon')
 const { success } = require('./helper.js');
 // Importation des données des pokémons à partir du fichier 'card-pokemons.js'
 let pokemons = require('./card-pokemons.js');
 const app = express();
 // Définition du port sur lequel l'application va écouter
 const port = 3000;
+
+app
+    .use(favicon(__dirname + '/favicon.ico'))
+    .use(morgan('dev'))
 
 // Définition d'une route pour la méthode GET sur le chemin '/' 
 // Cette route envoie une réponse avec le message 'hello world !'
@@ -34,6 +40,8 @@ app.get('/api/pokemons/:id', (req, res) => {
 app.get('/api/pokemons', (req, res) => {
     res.send(`Il y a ${pokemons.length} pokémons dans le pokdex pour le moment.`);
 });
+
+
 
 // j'affiche un message dans la console pour indiquer que le serveur est en cours d'exécution
 app.listen(port, () => console.log(`Application Node est démarré sur : http://localhost:${port}`));

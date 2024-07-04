@@ -10,6 +10,8 @@
   "description": "Api rest to handle some pokemons.",
   "dependencies": {
     "express": "^4.19.2",
-    "nodemon": "^3.1.4"
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4",
+    "serve-favicon": "^2.5.0"
   }
 }

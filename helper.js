@@ -3,3 +3,4 @@ exports.success = (message, data) => {
     // La fonction retourne un objet contenant les propriétés 'message' et 'data'
     return { message, data }
 };
+
