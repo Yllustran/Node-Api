@@ -1,6 +1,7 @@
 // Importation du module express pour créer une application web
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const favicon = require('serve-favicon')
 const { success, getUniqueId } = require('./helper.js');
 // Importation des données des pokémons à partir du fichier 'card-pokemons.js'
@@ -11,7 +12,8 @@ const port = 3000;
 
 app
     .use(favicon(__dirname + '/favicon.ico')) // Utilise le middleware 'serve-favicon' pour afficher le fichier favicon.ico 
-    .use(morgan('dev')); // Utilise le middleware 'morgan' pour logger les requêtes HTTP
+    .use(morgan('dev')) // Utilise le middleware 'morgan' pour logger les requêtes HTTP
+    .use(bodyParser.json()); // Utilise le middleware 'body-parser' pour analyser les corps des requêtes HTTP en format JSON
 
 // Définition d'une route pour la méthode GET sur le chemin '/' 
 // Cette route envoie une réponse avec le message 'hello world !'
@@ -35,8 +37,15 @@ app.get('/api/pokemons/:id', (req, res) => {
     }
 });
 
+// // CRUD -> read : on affiche la liste des pokemons au format json sur l'url api/pokemons
+app.get('/api/pokemons', (req, res) => {
+    for (let i of pokemons) {
+        const message = 'Liste des Pokémons récupérée avec succès';
+        res.json(success(message, pokemons));
+    }
+});
 
-// Route POST à l'URL /api/pokemons
+// CRUD -> Create : Route POST à l'URL /api/pokemons
 app.post('/api/pokemons', (req, res) => {
     // Génère un nouvel ID unique pour le pokemon avec la méthode getUniqueId contenu dans helper.js
     const id = getUniqueId(pokemons);
@@ -50,14 +59,22 @@ app.post('/api/pokemons', (req, res) => {
     res.json(success(message, pokemonCreated));
 });
 
+// CRUD -> Update : Pour la modification de pokemons sous insomnia
+app.put('/api/pokemons/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const pokemonUpdated = { ...req.body, id: id };
+    pokemons = pokemons.map(pokemon => {
+        return pokemon.id === id ? pokemonUpdated : pokemon;
+    });
+    const message = `Le pokemon ${pokemonUpdated.name} a bien été modifié.`;
+    res.json(success(message, pokemonUpdated));
+});
 
 // Définition d'une route pour la méthode GET sur le chemin '/api/pokemons'
 // Cette route envoie une réponse avec le nombre total de pokémons dans le pokédex
 app.get('/api/pokemons', (req, res) => {
     res.send(`Il y a ${pokemons.length} pokémons dans le pokdex pour le moment.`);
 });
-
-
 
 // j'affiche un message dans la console pour indiquer que le serveur est en cours d'exécution
 app.listen(port, () => console.log(`Application Node est démarré sur : http://localhost:${port}`));
