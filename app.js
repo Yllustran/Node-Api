@@ -34,7 +34,17 @@ sequelize.authenticate()
 const Pokemon = PokemonModel(sequelize, DataTypes);
 
 sequelize.sync({force: true})
-.then(_ => console.log('La base de donnée "Pokedex" a bien été synchronisée'));
+    .then(_ => {
+        console.log('La base de donnée "Pokedex" a bien été synchronisée')
+
+        Pokemon.create({
+            name: "Bulbizarre",
+            hp: 25,
+            cp: 5,
+            picture: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
+            types: ["Plante", "Poison"].join()
+        }).then(bulbizzare => console.log(bulbizzare.toJSON()))
+    });
 
 app
     .use(favicon(__dirname + '/favicon.ico')) // Utilise le middleware 'serve-favicon' pour afficher le fichier favicon.ico 
