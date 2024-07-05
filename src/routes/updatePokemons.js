@@ -12,8 +12,12 @@ module.exports = (app) => {
     })
     .then(_ => {
       // Récupération du pokémon mis à jour par son identifiant
-      Pokemon.findByPk(id).then(pokemon => {
-        // Définition du message de succès avec le nom du pokémon modifié
+      return Pokemon.findByPk(id).then(pokemon => {
+        // Gestion des erreur 404 - Le pokemon n'existe pas dans la BDD
+        if (pokemon === null) {
+          const message = "Le Pokemon demandé n'existe pas, réessayez avec un autre identifiant";
+          return res.statut(404).json({message});
+        }
         const message = `Le pokémon ${pokemon.name} a bien été modifié.`
         // Envoi de la réponse en format JSON contenant le message et les données du pokémon modifié
         res.json({ message, data: pokemon })
