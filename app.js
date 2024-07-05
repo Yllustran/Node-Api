@@ -15,8 +15,6 @@ app
 
 sequelize.initDb()
 
-// Ici, je placerais les futurs points de terminaison
-
 // Importation et configuration de la route pour récupérer tous les pokémons
 require('./src/routes/findAllPokemons.js')(app);
 // Importation et configuration de la route pour récupérer un pokémon par son ID
@@ -27,6 +25,12 @@ require('./src/routes/createPokemons.js')(app);
 require('./src/routes/updatePokemons.js')(app);
 // Importation et configuration de la route pour supprimer un pokemon par son ID pokémon
 require('./src/routes/deletePokemons.js')(app);
+
+// Gestion des erreurs 404
+app.use(({res}) => {
+    const message = "Impossible de trouver la ressource demandée, Vous pouvez essayer une autre URL.";
+    res.status(404).json({message});
+});
 
 
 // j'affiche un message dans la console pour indiquer que le serveur est en cours d'exécution
