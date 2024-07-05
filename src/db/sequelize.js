@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize')
 const PokemonModel = require('../models/pokemons')
 const pokemons = require('./card-pokemons')
 const UserModel = require('../models/users')
+const bcrypt = require('bcrypt');
 const sequelize = new Sequelize('pokedex', 'root', '', {
   host: 'localhost',
   dialect: 'mariadb',
@@ -24,17 +25,25 @@ const initDb = () => {
         cp: pokemon.cp,
         picture: pokemon.picture,
         types: pokemon.types.join(',')
-      }).then(pokemon => console.log(pokemon.toJSON()))
-    })
+      })//.then(pokemon => console.log(pokemon.toJSON()))
+    });
 
-    // On créer un premier utilisateur
-    User.create({
-        username: 'John',
-        password: 'Doe'
-    })
-    .then(user => console.log(user.toJSON()));
-    console.log('La base de donnée a bien été initialisée !')
-  })
+
+    return bcrypt.hash('Monsuperpassword1!', 10);
+})
+.then(hash => {
+  return User.create({
+    username: 'John',
+    password: 'Monsuperpassword1!'
+  });
+})
+.then(user => {
+  console.log(user.toJSON());
+  console.log('La base de donnée a bien été initialisée !');
+})
+.catch(error => {
+  console.error('An error occurred while initializing the database:', error);
+});
 }
 
 module.exports = { 
