@@ -25,6 +25,8 @@ require('./src/routes/createPokemons.js')(app);
 require('./src/routes/updatePokemons.js')(app);
 // Importation et configuration de la route pour supprimer un pokemon par son ID pokémon
 require('./src/routes/deletePokemons.js')(app);
+// Importation et configuration de la route pour s'authentifier
+require('./src/routes/login.js')(app);
 
 // Gestion des erreurs 404
 app.use(({res}) => {
