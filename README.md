@@ -1,7 +1,8 @@
 ## Description
 
 This project is a REST API developed using Node.js and the Express framework. It includes Sequelize for managing a relational database, and is set up in a local development environment using WAMP and PhpMyAdmin for MySQL database management. Insomnia was used for testing and debugging the API endpoints. The entire project is developed in JavaScript.
-Note : This project was developed using the Udemy course by: Simon Dieny
+
+Note : This project was developed using the Udemy course by : Simon Dieny
 
 ## Features
 
