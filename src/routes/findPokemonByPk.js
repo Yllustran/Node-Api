@@ -14,5 +14,9 @@ module.exports = (app) => {
         // Envoi de la réponse en format JSON contenant le message et les données du pokémon
         res.json({ message, data: pokemon })
       })
-  })
-}
+      .catch(error =>{
+        const message = ` La pokémons n'a pas pu être récupérée. Réessayez dans quelques instants.`;
+        res.status(500).json({message, data: error});
+      });
+  });
+};

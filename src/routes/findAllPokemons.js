@@ -12,5 +12,10 @@ Pokemon.findAll()
         //Envoi de la réponse en format JSON contenant le message et les données des pokémons
         res.json({ message, data: pokemons })
       })
-  })
-}
+      // affiche ce message d'erreur en cas d'erreur serveur (Code 500)
+      .catch(error =>{
+        const message = ` La liste des pokémons n'a pas pu être récupérée. Réessayez dans quelques instants.`;
+        res.status(500).json({message, data: error});
+      });
+  });
+};

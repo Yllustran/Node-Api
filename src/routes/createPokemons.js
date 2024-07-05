@@ -20,8 +20,8 @@ module.exports = (app) => {
     })
     // Gestion des erreurs en cas d'échec de la création du pokémon
     .catch(error => {
-      const message = `La création du pokémon a échoué.`
+      const message = `La pokémons n'a pas pu être ajouté au Pokédex. Réessayez dans quelques instants.`
       res.status(500).json({ message, data: error })
-    })
-  })
-}
+    });
+  });
+};

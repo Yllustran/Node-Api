@@ -22,7 +22,7 @@ module.exports = (app) => {
     // Gestion des erreurs en cas d'échec de la mise à jour du pokémon
     .catch(error => {
       const message = `La modification du pokémon a échoué.`
-      res.status(500).json({ message, data: error })
-    })
-  })
-}
+      res.status(500).json({ message, data: error });
+    });
+  });
+};

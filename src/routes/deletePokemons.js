@@ -17,7 +17,7 @@ module.exports = (app) => {
         const message = `Le pokémon avec l'identifiant n°${pokemonDeleted.id} a bien été supprimé.`
         // Réponse JSON envoyée au client avec le message et les données du Pokémon supprimé
         res.json({message, data: pokemonDeleted })
-      })
-    })
-  })
-}
+      });
+    });
+  });
+};
