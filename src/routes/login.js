@@ -1,6 +1,8 @@
 // Importation des modules nécessaires
 const { User } = require('../db/sequelize'); // Importation du modèle User à partir de sequelize
 const bcrypt = require('bcrypt'); // Importation de bcrypt pour le hachage et la comparaison des mots de passe
+const jwt = require('jsonwebtoken');
+
 
 // Exportation d'une fonction prenant l'application Express comme argument
 module.exports = (app) => {
@@ -19,9 +21,17 @@ module.exports = (app) => {
           const message = `Le mot de passe est incorrect.`;
           return res.status(401).json({ message });
         }
+        // JWT 
+        // On génère un token JWT avec la méthode sign
+        const token = jwt.sign(
+          { userId: user.id},
+          privatekey,
+          { expiresIn: '24h'}
+        )
+
         // Si le mot de passe est valide, retourner un message de succès avec les données de l'utilisateur
         const message = `L'utilisateur a été connecté avec succès`;
-        return res.json({ message, data: user });
+        return res.json({ message, data: user, token });
       });
     })
     .catch(error => {
