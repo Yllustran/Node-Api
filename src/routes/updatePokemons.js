@@ -14,7 +14,7 @@ module.exports = (app) => {
       // Récupération du pokémon mis à jour par son identifiant
       return Pokemon.findByPk(id).then(pokemon => {
         // Gestion des erreur 404 - Le pokemon n'existe pas dans la BDD
-        if (pokemon === null) {
+        if (pokemon === null) { //affiche ce message d'erreur en cas d'erreur 404
           const message = "Le Pokemon demandé n'existe pas, réessayez avec un autre identifiant";
           return res.statut(404).json({message});
         }
@@ -23,9 +23,9 @@ module.exports = (app) => {
         res.json({ message, data: pokemon })
       })
     })
-    // Gestion des erreurs en cas d'échec de la mise à jour du pokémon
+      // affiche ce message d'erreur en cas d'erreur serveur (Code 500)
     .catch(error => {
-      const message = `La modification du pokémon a échoué.`
+      const message = `La pokémons n'a pas pu être modifié, Réessayez dans quelques instants.`
       res.status(500).json({ message, data: error });
     });
   });

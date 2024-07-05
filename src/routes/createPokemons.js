@@ -18,7 +18,7 @@ module.exports = (app) => {
       // Envoi de la réponse en format JSON contenant le message et les données du pokémon créé
       res.json({ message, data: pokemon })
     })
-    // Gestion des erreurs en cas d'échec de la création du pokémon
+    // affiche ce message d'erreur en cas d'erreur serveur (Code 500)
     .catch(error => {
       const message = `La pokémons n'a pas pu être ajouté au Pokédex. Réessayez dans quelques instants.`
       res.status(500).json({ message, data: error })
